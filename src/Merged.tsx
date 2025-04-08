@@ -77,12 +77,12 @@ const CapabilityCards = () => {
         {capabilities.map(capability => (
           <div 
             key={capability.id} 
-            className="rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-4px]"
+            className="rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-4px] p-4"
             style={{ borderTop: `4px solid ${capability.color}` }}
           >
-            <div className="p-6">
+            <div className="p-2">
               <div className="flex items-center mb-4">
-                <span className="text-3xl mr-3">{capability.icon}</span>
+                <span className="text-3xl ms-3">{capability.icon}</span>
                 <h3 className="text-xl font-bold">{capability.title}</h3>
               </div>
               
@@ -113,7 +113,7 @@ const CapabilityCards = () => {
               </div>
             </div>
             
-            <div className="bg-gray-50 px-6 py-4 flex justify-end">
+            <div className="bg-gray-50 px-5 py-4 flex justify-end">
               <button 
                 className="text-blue-600 hover:text-blue-800 font-medium text-sm"
                 style={{ color: capability.color }}
@@ -204,7 +204,7 @@ const FilterableCapabilities = () => {
     return (
       <div className="w-full max-w-4xl mx-auto">
         {/* Filter Controls */}
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="flex flex-wrap gap-2 mb-5">
           {categories.map(category => (
             <button
               key={category.id}
@@ -250,7 +250,7 @@ const FilterableCapabilities = () => {
         </div>
         
         {filteredCapabilities.length === 0 && (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-5 text-gray-500">
             No capabilities found in this category
           </div>
         )}
@@ -426,7 +426,7 @@ const ProductComparisonTable = () => {
     return (
       <div className="w-full max-w-4xl mx-auto">
         {/* Category Selector */}
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="flex flex-wrap gap-2 mb-5">
           {categories.map(category => (
             <button
               key={category.id}
@@ -443,7 +443,7 @@ const ProductComparisonTable = () => {
         </div>
         
         {/* Comparison Title */}
-        <div className="mb-6">
+        <div className="mb-5">
           <h2 className="text-2xl font-bold text-gray-900">{currentCategory.title}</h2>
           <p className="text-gray-600">{currentCategory.description}</p>
         </div>
@@ -453,14 +453,14 @@ const ProductComparisonTable = () => {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th scope="col" className="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Product
                 </th>
                 {currentCategory.compareAttributes.map(attr => (
                   <th 
                     key={attr} 
                     scope="col" 
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    className="px-5 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     {attr === 'deploymentOptions' ? 'Deployment' : 
                      attr === 'idealFor' ? 'Ideal For' :
@@ -473,12 +473,12 @@ const ProductComparisonTable = () => {
             <tbody className="bg-white divide-y divide-gray-200">
               {currentCategory.products.map((product, idx) => (
                 <tr key={product.name} className={idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                                  <td className="px-6 py-4">
+                                  <td className="px-5 py-4">
                                     <div className="font-medium text-gray-900">{product.name}</div>
                                     <div className="text-gray-500 text-sm">{product.description}</div>
                                   </td>
                                   {currentCategory.compareAttributes.map(attr => (
-                                    <td key={attr} className="px-6 py-4">
+                                    <td key={attr} className="px-5 py-4">
                                       {renderAttributeValue(product, attr)}
                                     </td>
                                   ))}
