@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-interface Capability {
-  id: number;
-  title: string;
-  icon: string;
-  color: string;
-  products: string[];
-  description: string;
-  keyCapability: string;
-}
+// interface Capability {
+//   id: number;
+//   title: string;
+//   icon: string;
+//   color: string;
+//   products: string[];
+//   description: string;
+//   keyCapability: string;
+// }
 
 const CapabilityCards = () => {
   // ... CapabilityCards component code remains the same
