@@ -36,5 +36,5 @@ function images() {
     .pipe(dest(paths.images.dest));
 }
 
-exports.build = series(clean, parallel(styles, scripts, images));
+exports.build = series(clean, parallel(styles, scripts));
 exports.default = exports.build;
