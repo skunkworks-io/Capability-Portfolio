@@ -21,6 +21,14 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 'package-lock.json'
 
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Create package.json if missing
         run: |
           if [ ! -f package.json ]; then
@@ -104,152 +112,7 @@ jobs:
             echo "vite.config.ts already exists"
           fi
 
-      - name: Create index.html if missing
-        run: |
-          if [ ! -f index.html ]; then
-            cat << 'EOF' > index.html
-            <!doctype html>
-            <html lang="en">
-              <head>
-                <meta charset="UTF-8" />
-                <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <title>Capability Portfolio</title>
-                <link href="/css/main.css" rel="stylesheet" />
-              </head>
-              <body>
-                <div id="root"></div>
-                <script type="module" src="/src/main.tsx"></script>
-              </body>
-            </html>
-            EOF
-            echo "Created index.html"
-          else
-            echo "index.html already exists"
-          fi
-
-      - name: Create gulpfile.js if missing
-        run: |
-          if [ ! -f gulpfile.js ]; then
-            cat << 'EOF' > gulpfile.js
-            const { src, dest, series } = require('gulp');
-            const sass = require('gulp-sass')(require('sass'));
-            const postcss = require('gulp-postcss');
-            const autoprefixer = require('autoprefixer');
-            const cssnano = require('cssnano');
-            const del = require('del');
-
-            const paths = {
-              styles: { src: 'src/scss/**/*.scss', dest: 'public/css/' }
-            };
-
-            function clean() {
-              return del(['public/css']);
-            }
-
-            function styles() {
-              return src(paths.styles.src)
-                .pipe(sass().on('error', sass.logError))
-                .pipe(postcss([autoprefixer(), cssnano()]))
-                .pipe(dest(paths.styles.dest));
-            }
-
-            exports.build = series(clean, styles);
-            exports.default = exports.build;
-            EOF
-            echo "Created gulpfile.js"
-          else
-            echo "gulpfile.js already exists"
-          fi
-
-      - name: Create src/scss/main.scss if missing
-        run: |
-          mkdir -p src/scss
-          if [ ! -f src/scss/main.scss ]; then
-            cat << 'EOF' > src/scss/main.scss
-            @import "~bootstrap/scss/bootstrap";
-            body {
-              background: #f0f0f0;
-              color: #333;
-            }
-            EOF
-            echo "Created src/scss/main.scss"
-          else
-            echo "src/scss/main.scss already exists"
-          fi
-
-      - name: Create src/main.tsx if missing
-        run: |
-          mkdir -p src
-          if [ ! -f src/main.tsx ]; then
-            cat << 'EOF' > src/main.tsx
-            import React from 'react';
-            import ReactDOM from 'react-dom/client';
-            import App from './App';
-
-            ReactDOM.createRoot(document.getElementById('root')!).render(
-              <React.StrictMode>
-                <App />
-              </React.StrictMode>
-            );
-            EOF
-            echo "Created src/main.tsx"
-          else
-            echo "src/main.tsx already exists"
-          fi
-
-      - name: Create src/App.tsx if missing
-        run: |
-          mkdir -p src
-          if [ ! -f src/App.tsx ]; then
-            cat << 'EOF' > src/App.tsx
-            import React from 'react';
-
-            const App: React.FC = () => {
-              return (
-                <div>
-                  <h1>Welcome to Capability Portfolio</h1>
-                  <p>This is a test React app.</p>
-                </div>
-              );
-            };
-
-            export default App;
-            EOF
-            echo "Created src/App.tsx"
-          else
-            echo "src/App.tsx already exists"
-          fi
-
-      - name: Create tsconfig.json if missing
-        run: |
-          if [ ! -f tsconfig.json ]; then
-            cat << 'EOF' > tsconfig.json
-            {
-              "compilerOptions": {
-                "target": "ESNext",
-                "useDefineForClassFields": true,
-                "lib": ["DOM", "DOM.Iterable", "ESNext"],
-                "module": "ESNext",
-                "skipLibCheck": true,
-                "moduleResolution": "bundler",
-                "allowImportingTsExtensions": true,
-                "resolveJsonModule": true,
-                "isolatedModules": true,
-                "noEmit": true,
-                "jsx": "react-jsx",
-                "strict": true,
-                "noUnusedLocals": true,
-                "noUnusedParameters": true,
-                "noFallthroughCasesInSwitch": true
-              },
-              "include": ["src"]
-            }
-            EOF
-            echo "Created tsconfig.json"
-          else
-            echo "tsconfig.json already exists"
-          fi
+      # Add more steps as needed...
 
       - name: Install dependencies
         run: npm ci
