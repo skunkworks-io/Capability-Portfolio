@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { CapabilityCards, FilterableCapabilities, ProductComparisonTable } from './Merged.tsx';
 
-function App() {
+const App: React.FC = () => {
   return (
     <div className="App">
       <header className="App-header bg-primary text-white p-3">
@@ -15,6 +15,6 @@ function App() {
       </main>
     </div>
   );
-}
+};
 
 export default App;
