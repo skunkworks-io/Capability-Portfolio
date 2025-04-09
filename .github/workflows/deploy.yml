@@ -19,10 +19,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'npm'
+          # Removed the cache option that was causing the error
 
       - name: Install Dependencies
-        run: npm ci --legacy-peer-deps
+        run: |
+          npm install --legacy-peer-deps
+          npm install bootstrap@5.3.2 --save
 
       - name: Configure Git
         run: |
