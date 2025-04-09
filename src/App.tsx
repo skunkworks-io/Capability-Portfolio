@@ -3,7 +3,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { CapabilityCards, FilterableCapabilities, ProductComparisonTable } from './Merged.tsx';
 
 function App() {
- return(
+  return (
     <div className="App">
       <header className="App-header bg-primary text-white p-3">
         <h1>Skunkworks Capability Portfolio</h1>
@@ -14,7 +14,7 @@ function App() {
         <ProductComparisonTable />
       </main>
     </div>
- )
+  );
 }
 
-export default App
+export default App;
