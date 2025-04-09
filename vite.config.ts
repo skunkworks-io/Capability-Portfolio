@@ -1,20 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
-import fs from 'fs'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    {
-      name: 'add-nojekyll',
-      closeBundle() {
-        // Create .nojekyll file in the build output directory
-        fs.writeFileSync(path.resolve(__dirname, 'dist', '.nojekyll'), '')
-      }
-    }
-  ],
+  plugins: [react()],
   base: '/Capability-Portfolio/', // This should match your repository name
   resolve: {
     alias: {
@@ -29,12 +19,17 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
+          bootstrap: ['bootstrap']
         },
-        // Ensure proper file extensions and formats
-        entryFileNames: 'assets/[name].[hash].js',
-        chunkFileNames: 'assets/[name].[hash].js',
-        assetFileNames: 'assets/[name].[hash].[ext]',
       },
     },
   },
+  css: {
+    // This ensures Bootstrap CSS is properly processed
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import "bootstrap/scss/bootstrap";`
+      }
+    }
+  }
 })
