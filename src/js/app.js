@@ -1,1 +1,1 @@
-console.log('Custom JS loaded');
+console.log('Custom JavaScript loaded');
