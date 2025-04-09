@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Skunkworks Capability Portfolio - Showcasing innovative projects and advanced capabilities" />
+    <meta name="theme-color" content="#0f3460" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Skunkworks Capability Portfolio</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Roboto', sans-serif;
+        background-color: #f8f9fa;
+      }
+      
+      #root {
+        min-height: 100vh;
+      }
+      
+      .loading-screen {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-color: #1a1a2e;
+        color: white;
+      }
+      
+      .loading-logo {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 24px;
+        animation: pulse 2s infinite ease-in-out;
+      }
+      
+      @keyframes pulse {
+        0% { opacity: 0.7; transform: scale(0.98); }
+        50% { opacity: 1; transform: scale(1); }
+        100% { opacity: 0.7; transform: scale(0.98); }
+      }
+      
+      .loading-text {
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 600;
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+        margin-top: 16px;
+      }
+    </style>
+    <script type="module" crossorigin src="/Capability-Portfolio/assets/index.0bf84e9b.js"></script>
+    <link rel="modulepreload" crossorigin href="/Capability-Portfolio/assets/vendor.59d8fc88.js">
+    <link rel="stylesheet" href="/Capability-Portfolio/assets/index.4e5c0698.css">
+  </head>
+  <body>
+    <div id="root">
+      <!-- Fallback loading screen that shows until React loads -->
+      <div class="loading-screen">
+        <svg class="loading-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+          <!-- Background Circle -->
+          <circle cx="100" cy="100" r="95" fill="#1a1a2e" />
+          <circle cx="100" cy="100" r="85" fill="#0f3460" stroke="#16213e" stroke-width="2" />
+          
+          <!-- Abstract Skunk Symbol -->
+          <path d="M70 65 C50 65, 40 85, 40 105 C40 125, 50 135, 70 135 C90 135, 90 125, 90 105 C90 85, 90 65, 70 65" 
+                fill="#e6e6e6" stroke="#000000" stroke-width="1.5" />
+          <path d="M130 65 C150 65, 160 85, 160 105 C160 125, 150 135, 130 135 C110 135, 110 125, 110 105 C110 85, 110 65, 130 65" 
+                fill="#1b1b1b" stroke="#000000" stroke-width="1.5" />
+          
+          <!-- Stripe -->
+          <path d="M70 100 L130 100" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
+          
+          <!-- Tech Elements -->
+          <circle cx="55" cy="90" r="5" fill="#4cc9f0" />
+          <circle cx="145" cy="90" r="5" fill="#4cc9f0" />
+          
+          <!-- Text: Skunkworks -->
+          <text x="100" y="160" font-family="Arial, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="white">SKUNKWORKS</text>
+        </svg>
+        <div class="loading-text">LOADING CAPABILITIES...</div>
+      </div>
+    </div>
+    
+  </body>
+</html>
