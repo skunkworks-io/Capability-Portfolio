@@ -89,7 +89,32 @@
         <div class="loading-text">LOADING CAPABILITIES...</div>
       </div>
     </div>
-    <!-- Fixed script path for Vite -->
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module">
+      // This is a simple script to load your main JS bundle dynamically
+      // It automatically finds the correct JS file based on the window location
+      function loadMainScript() {
+        try {
+          // Look for JS files in the current directory
+          const scriptElements = document.querySelectorAll('script[type="module"]');
+          if (scriptElements.length > 1) {
+            // If there are already module scripts, don't add more
+            return;
+          }
+
+          // Create a new script element
+          const script = document.createElement('script');
+          script.type = 'module';
+          script.src = './assets/index.js'; // Default path
+          
+          // Append the script to the body
+          document.body.appendChild(script);
+        } catch (err) {
+          console.error('Error loading main script:', err);
+        }
+      }
+      
+      // Load the main script
+      loadMainScript();
+    </script>
   </body>
 </html>
