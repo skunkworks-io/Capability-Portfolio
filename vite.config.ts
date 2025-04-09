@@ -1,36 +1,29 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { resolve } from 'path'
 import fs from 'fs'
-import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
     {
-      name: 'html-transform',
-      transformIndexHtml(html) {
-        // Replace script source with the correct path for GitHub Pages
-        return html.replace(
-          /<script type="module" src="\/src\/main.tsx"><\/script>/,
-          '<script type="module" src="./index.js"></script>'
-        );
-      },
+      name: 'generate-assets',
       closeBundle() {
         // Create .nojekyll file
-        fs.writeFileSync(path.resolve(__dirname, 'dist', '.nojekyll'), '');
+        fs.writeFileSync(resolve(__dirname, 'dist', '.nojekyll'), '')
       }
     }
   ],
-  base: '/Capability-Portfolio/', // This should match your repository name
+  base: '/Capability-Portfolio/',
   build: {
     outDir: 'dist',
-    // Ensure files don't use hashed names for simplicity
+    assetsDir: 'assets',
     rollupOptions: {
       output: {
-        entryFileNames: 'index.js',
-        chunkFileNames: '[name].js',
-        assetFileNames: '[name].[ext]'
+        entryFileNames: 'assets/index.js',
+        chunkFileNames: 'assets/[name].js',
+        assetFileNames: 'assets/[name].[ext]'
       }
     }
   }
