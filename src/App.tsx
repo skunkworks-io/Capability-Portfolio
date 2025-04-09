@@ -1,6 +1,4 @@
-import React from 'react';
-// You can use one of these methods to import Bootstrap:
-// Method 1: If you installed Bootstrap as a dependency
+// Import Bootstrap CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
