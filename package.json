@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "homepage": "https://vagz-ware.github.io/test-react-app/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
