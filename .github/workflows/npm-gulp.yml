@@ -1,44 +1,39 @@
-name: Build and Deploy
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    branches:
+      - main  # Set this to your default branch
+
+permissions:
+  contents: write
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v4.3.0
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
+          node-version: 18
           cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "github-actions-bot@users.noreply.github.com"
 
       - name: Build
         run: npm run build
 
-      - name: Verify dist folder
-        run: ls -R dist/ || echo "dist/ folder is empty"
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          name: build-output
-          path: dist/
-          retention-days: 7
-
-      - name: Deploy to GitHub Pages
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: npm run deploy
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          folder: dist
+          branch: gh-pages
