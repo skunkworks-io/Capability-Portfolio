@@ -1,4 +1,4 @@
-name: Build and Test with Gulp
+name: Build and Deploy with Gulp
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,6 +21,236 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 'package-lock.json'
 
+      - name: Create package.json if missing
+        run: |
+          if [ ! -f package.json ]; then
+            cat << 'EOF' > package.json
+            {
+              "name": "capability-portfolio",
+              "version": "0.0.0",
+              "private": true,
+              "type": "module",
+              "homepage": "https://skunkworks-io.github.io/Capability-Portfolio/",
+              "scripts": {
+                "dev": "vite",
+                "build": "tsc -b && vite build",
+                "lint": "eslint .",
+                "preview": "vite preview",
+                "gulp": "gulp build",
+                "predeploy": "npm run gulp && npm run build",
+                "deploy": "gh-pages -d dist"
+              },
+              "dependencies": {
+                "@popperjs/core": "^2.11.8",
+                "bootstrap": "^5.3.3",
+                "react": "^18.3.1",
+                "react-dom": "^18.3.1"
+              },
+              "devDependencies": {
+                "@eslint/js": "^9.11.1",
+                "@types/react": "^18.3.11",
+                "@types/react-dom": "^18.3.0",
+                "@vitejs/plugin-react": "^4.3.2",
+                "autoprefixer": "^10.4.20",
+                "cssnano": "^7.0.6",
+                "del": "^7.1.0",
+                "eslint": "^9.11.1",
+                "eslint-plugin-react-hooks": "^5.0.0",
+                "eslint-plugin-react-refresh": "^0.4.12",
+                "gh-pages": "^6.2.0",
+                "globals": "^15.11.0",
+                "gulp": "^4.0.2",
+                "gulp-postcss": "^10.0.0",
+                "gulp-sass": "^5.1.0",
+                "sass": "^1.79.4",
+                "typescript": "~5.6.3",
+                "typescript-eslint": "^8.8.0",
+                "vite": "^6.2.0"
+              }
+            }
+            EOF
+            echo "Created package.json"
+          else
+            echo "package.json already exists"
+          fi
+
+      - name: Sync package-lock.json
+        run: |
+          if [ ! -f package-lock.json ] || ! npm ci --dry-run; then
+            echo "package-lock.json missing or out of sync; running npm install"
+            npm install
+          else
+            echo "package-lock.json is in sync"
+          fi
+
+      - name: Create vite.config.ts if missing
+        run: |
+          if [ ! -f vite.config.ts ]; then
+            cat << 'EOF' > vite.config.ts
+            import { defineConfig } from 'vite';
+            import react from '@vitejs/plugin-react';
+
+            export default defineConfig({
+              plugins: [react()],
+              base: '/Capability-Portfolio',
+              publicDir: 'public',
+              build: {
+                outDir: 'dist'
+              }
+            });
+            EOF
+            echo "Created vite.config.ts"
+          else
+            echo "vite.config.ts already exists"
+          fi
+
+      - name: Create index.html if missing
+        run: |
+          if [ ! -f index.html ]; then
+            cat << 'EOF' > index.html
+            <!doctype html>
+            <html lang="en">
+              <head>
+                <meta charset="UTF-8" />
+                <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <title>Capability Portfolio</title>
+                <link href="/css/main.css" rel="stylesheet" />
+              </head>
+              <body>
+                <div id="root"></div>
+                <script type="module" src="/src/main.tsx"></script>
+              </body>
+            </html>
+            EOF
+            echo "Created index.html"
+          else
+            echo "index.html already exists"
+          fi
+
+      - name: Create gulpfile.js if missing
+        run: |
+          if [ ! -f gulpfile.js ]; then
+            cat << 'EOF' > gulpfile.js
+            const { src, dest, series } = require('gulp');
+            const sass = require('gulp-sass')(require('sass'));
+            const postcss = require('gulp-postcss');
+            const autoprefixer = require('autoprefixer');
+            const cssnano = require('cssnano');
+            const del = require('del');
+
+            const paths = {
+              styles: { src: 'src/scss/**/*.scss', dest: 'public/css/' }
+            };
+
+            function clean() {
+              return del(['public/css']);
+            }
+
+            function styles() {
+              return src(paths.styles.src)
+                .pipe(sass().on('error', sass.logError))
+                .pipe(postcss([autoprefixer(), cssnano()]))
+                .pipe(dest(paths.styles.dest));
+            }
+
+            exports.build = series(clean, styles);
+            exports.default = exports.build;
+            EOF
+            echo "Created gulpfile.js"
+          else
+            echo "gulpfile.js already exists"
+          fi
+
+      - name: Create src/scss/main.scss if missing
+        run: |
+          mkdir -p src/scss
+          if [ ! -f src/scss/main.scss ]; then
+            cat << 'EOF' > src/scss/main.scss
+            @import "~bootstrap/scss/bootstrap";
+            body {
+              background: #f0f0f0;
+              color: #333;
+            }
+            EOF
+            echo "Created src/scss/main.scss"
+          else
+            echo "src/scss/main.scss already exists"
+          fi
+
+      - name: Create src/main.tsx if missing
+        run: |
+          mkdir -p src
+          if [ ! -f src/main.tsx ]; then
+            cat << 'EOF' > src/main.tsx
+            import React from 'react';
+            import ReactDOM from 'react-dom/client';
+            import App from './App';
+
+            ReactDOM.createRoot(document.getElementById('root')!).render(
+              <React.StrictMode>
+                <App />
+              </React.StrictMode>
+            );
+            EOF
+            echo "Created src/main.tsx"
+          else
+            echo "src/main.tsx already exists"
+          fi
+
+      - name: Create src/App.tsx if missing
+        run: |
+          mkdir -p src
+          if [ ! -f src/App.tsx ]; then
+            cat << 'EOF' > src/App.tsx
+            import React from 'react';
+
+            const App: React.FC = () => {
+              return (
+                <div>
+                  <h1>Welcome to Capability Portfolio</h1>
+                  <p>This is a test React app.</p>
+                </div>
+              );
+            };
+
+            export default App;
+            EOF
+            echo "Created src/App.tsx"
+          else
+            echo "src/App.tsx already exists"
+          fi
+
+      - name: Create tsconfig.json if missing
+        run: |
+          if [ ! -f tsconfig.json ]; then
+            cat << 'EOF' > tsconfig.json
+            {
+              "compilerOptions": {
+                "target": "ESNext",
+                "useDefineForClassFields": true,
+                "lib": ["DOM", "DOM.Iterable", "ESNext"],
+                "module": "ESNext",
+                "skipLibCheck": true,
+                "moduleResolution": "bundler",
+                "allowImportingTsExtensions": true,
+                "resolveJsonModule": true,
+                "isolatedModules": true,
+                "noEmit": true,
+                "jsx": "react-jsx",
+                "strict": true,
+                "noUnusedLocals": true,
+                "noUnusedParameters": true,
+                "noFallthroughCasesInSwitch": true
+              },
+              "include": ["src"]
+            }
+            EOF
+            echo "Created tsconfig.json"
+          else
+            echo "tsconfig.json already exists"
+          fi
+
       - name: Install dependencies
         run: npm ci
 
@@ -30,9 +260,18 @@ jobs:
       - name: Run Vite build
         run: npm run build
 
+      - name: Verify dist folder
+        run: ls -R dist/ || echo "dist/ folder is empty"
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-output
           path: dist/
           retention-days: 7
+
+      - name: Deploy to GitHub Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: npm run deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
