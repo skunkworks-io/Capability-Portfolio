@@ -19,10 +19,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          # Removed the cache option
 
       - name: Install Dependencies
-        run: npm install --legacy-peer-deps
+        run: |
+          npm install --legacy-peer-deps
+          npm install bootstrap@5.3.2 --save
 
       - name: Configure Git
         run: |
