@@ -77,7 +77,7 @@ exports.html = html;
 exports.watch = watchFiles;
 
 // Build task for production (runs clean, then all tasks in parallel)
-exports.build = series(clean, parallel(styles, scripts, images, html));
+exports.build = series(clean, parallel(styles, scripts, images));
 
 // Default task (same as build)
 exports.default = exports.build;
