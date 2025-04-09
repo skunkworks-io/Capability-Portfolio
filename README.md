@@ -1,5 +1,7 @@
 # React + TypeScript + Vite
 
+[![Build and Deploy with Gulp](https://github.com/skunkworks-io/Capability-Portfolio/actions/workflows/npm-gulp.yml/badge.svg)](https://github.com/skunkworks-io/Capability-Portfolio/actions/workflows/npm-gulp.yml)
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
