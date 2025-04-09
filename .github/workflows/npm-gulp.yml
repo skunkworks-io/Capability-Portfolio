@@ -22,16 +22,21 @@ jobs:
           cache-dependency-path: 'package-lock.json'
 
       - name: Verify package.json
-        run: cat package.json | jq .  # Ensure JSON is valid
+        run: |
+          cat package.json | jq . || (echo "Invalid JSON in package.json"; cat -n package.json | grep -C 5 '^ *34'; exit 1)
+          echo "package.json is valid"
 
       - name: List source files
-        run: ls -R src/  # Debug source file presence
+        run: ls -R src/ || echo "No src/ folder found"
 
       - name: Install dependencies
         run: npm ci
 
       - name: Run Gulp build
-        run: npx gulp build --verbose  # Verbose for debugging
+        run: npx gulp build --verbose
+
+      - name: Run Vite build
+        run: npm run build  # Run Vite to bundle React app
 
       - name: Upload build artifacts
         if: always()
